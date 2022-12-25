@@ -2,14 +2,15 @@ import { useEffect, useState, ChangeEvent } from 'react';
 import { optionType, forecastType } from '../types';
 
 const useForecast = () => {
-    // Ivano-Frankivsk
     const [term, setTerm] = useState<string>('')
     const [options, setOptions] = useState<[]>([])
     const [city, setCity] = useState<optionType | null >(null)
     const [forecast, setForecast] = useState<forecastType | null>(null)
+    const [loading, setLoading] = useState<Boolean>(false)
+    
   
     const getSearchOptions = (value: string) => {
-      fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${value}&limit=5&appid=${process.env.REACT_APP_API_KEY}`).then(res => res.json()).then(data => setOptions(data))
+      fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${value}&limit=5&appid=${process.env.REACT_APP_API_KEY}`).then(res => res.json()).then(data => setOptions(data)).catch(e => console.log(e))
     }
   
     const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -21,20 +22,24 @@ const useForecast = () => {
       getSearchOptions(value)
     }
   
-    const getForecast = (city: optionType) => {
-      fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&units=metric&appid=${process.env.REACT_APP_API_KEY}`)
-      .then(res => res.json())
-      .then(data => {
-        const forecastData = {
-          ...data.city,
-          list: data.list.slice(0, 16),
-        }
-        console.log(forecastData);
-        
-        setForecast(forecastData)
-      });
+    const getForecast = async (city: optionType) => {
+      setLoading(true)
+      try {
+       let responce = await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${city.lat}&lon=${city.lon}&units=metric&appid=${process.env.REACT_APP_API_KEY}`)
+        let data = await responce.json()
+          const forecastData = {
+            ...data.city,
+            list: data.list.slice(0, 16),
+          }
+          console.log(forecastData);
+          setForecast(forecastData)
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false)
+      }
     }
-  
+
     const onOptionSelect = (option: optionType) => {
       setCity(option)
     }
@@ -50,9 +55,9 @@ const useForecast = () => {
         setOptions([])
       }
     }, [city])
-
+    
     return {
-      term, options, forecast, onInputChange, onOptionSelect, onSubmit, setForecast
+      term, options, forecast, onInputChange, onOptionSelect, onSubmit, setForecast, loading,
     }
 }
 

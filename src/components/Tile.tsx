@@ -3,7 +3,7 @@ import Pop from "./Icons/Pop"
 import Pressure from "./Icons/Pressure"
 import Visibility from "./Icons/Visibility"
 import Wind from "./Icons/Wind"
-import Humidity from "./Icons/Wind"
+import Humidity from "./Icons/Humidity"
 
 type Props = {
   icon: 'wind' | 'feels' | 'humidity' | 'visibility' | 'pressure' | 'pop'
