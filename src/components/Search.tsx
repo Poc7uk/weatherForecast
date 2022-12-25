@@ -12,7 +12,7 @@ type Props = {
 const Search = ({term, options, onInputChange, onOptionSelect, onSubmit}: Props): JSX.Element => {
   // Ivano-Frankivsk
   return (
-      <section className="w-full md:max-w-[500px] p-4 flex flex-col text-center items-center justify-center md:px-10 lg:p-24 h-full lg:h-[90vh] bg-white bg-opacity-20 backdrop-blur-lg drop-shadow-lg rounded text-zinc-700">
+      <section className="w-full md:max-w-[500px] p-4 flex flex-col text-center items-center justify-center md:px-10 lg:p-24 h-screen sm:h-full lg:h-[90vh] bg-white bg-opacity-20 backdrop-blur-lg drop-shadow-lg rounded text-zinc-700">
 
         <h1 className="text-4xl font-thin">Weather <span className="font-black">Forecast</span></h1>
         <p className="text-sm mt-2">Напишіть назву міста, погода якого вас цікавить, та оберіть запропонований варіант</p>
